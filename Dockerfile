@@ -17,6 +17,8 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY ./app /code/app
 COPY ./alembic /code/alembic
 COPY ./alembic.ini /code/alembic.ini
+COPY ./seed.py /code/seed.py
+COPY ./seed_inventory.py /code/seed_inventory.py
 
 # Exponer el puerto en el que correrá FastAPI
 EXPOSE 8000
