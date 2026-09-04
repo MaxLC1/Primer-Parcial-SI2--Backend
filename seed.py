@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from app.core.database import SessionLocal
 from app.pkg_seguridad.models import Rol, Usuario
 from app.pkg_sucursales.models import Ciudad
+from app.pkg_catalogo.models import Producto, Categoria, Talla, Color
 from app.core.security import get_password_hash
 
 def seed_db():
