@@ -4,11 +4,25 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.core.database import SessionLocal
 from app.pkg_seguridad.models import Rol, Usuario
+from app.pkg_sucursales.models import Ciudad
 from app.core.security import get_password_hash
 
 def seed_db():
     db = SessionLocal()
     
+    # 0. Crear Ciudades (Departamentos)
+    ciudades_nombres = ["Santa Cruz", "La Paz", "Cochabamba", "Tarija", "Oruro", "Potosí", "Chuquisaca", "Beni", "Pando"]
+    print("--- CREANDO CIUDADES ---")
+    for nombre in ciudades_nombres:
+        ciudad = db.query(Ciudad).filter(Ciudad.nombre == nombre).first()
+        if not ciudad:
+            ciudad = Ciudad(nombre=nombre)
+            db.add(ciudad)
+            db.commit()
+            print(f"Ciudad '{nombre}' creada.")
+        else:
+            print(f"Ciudad '{nombre}' ya existía.")
+
     # 1. Crear los 5 roles definidos en la Arquitectura (CU-01 a CU-07)
     roles_nombres = ["Administrador", "Encargado", "Cajero", "Cliente", "Proveedor"]
     roles_db = {}
