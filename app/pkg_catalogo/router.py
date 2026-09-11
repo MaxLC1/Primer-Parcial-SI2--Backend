@@ -46,3 +46,25 @@ def read_colores(db: Session = Depends(get_db)):
 def create_color(color: schemas.ColorCreate, db: Session = Depends(get_db)):
     """Registra un nuevo color (nombre y HEX)."""
     return services.create_color(db=db, color=color)
+
+# -- COLECCIONES --
+@router.get("/colecciones", response_model=List[schemas.ColeccionOut])
+def read_colecciones(db: Session = Depends(get_db)):
+    """Obtiene la lista de colecciones."""
+    return services.get_colecciones(db)
+
+@router.post("/colecciones", response_model=schemas.ColeccionOut, status_code=status.HTTP_201_CREATED)
+def create_coleccion(coleccion: schemas.ColeccionCreate, db: Session = Depends(get_db)):
+    """Registra una nueva coleccion."""
+    return services.create_coleccion(db=db, coleccion=coleccion)
+
+# -- PROVEEDORES --
+@router.get("/proveedores", response_model=List[schemas.ProveedorOut])
+def read_proveedores(db: Session = Depends(get_db)):
+    """Obtiene la lista de proveedores."""
+    return services.get_proveedores(db)
+
+@router.post("/proveedores", response_model=schemas.ProveedorOut, status_code=status.HTTP_201_CREATED)
+def create_proveedor(proveedor: schemas.ProveedorCreate, db: Session = Depends(get_db)):
+    """Registra un nuevo proveedor."""
+    return services.create_proveedor(db=db, proveedor=proveedor)

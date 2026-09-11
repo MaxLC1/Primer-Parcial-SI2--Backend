@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI(
     title="FashionStore AR - API",
@@ -20,13 +22,21 @@ app.add_middleware(
 def read_root():
     return {"message": "Bienvenido a la API de FashionStore AR"}
 
+# Asegurar que exista la carpeta uploads
+os.makedirs("uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 from app.pkg_seguridad.router import router as seguridad_router
 from app.pkg_catalogo.router import router as catalogo_router
 from app.pkg_sucursales.router import router as sucursales_router
 from app.pkg_ventas.router import router as ventas_router
+from app.pkg_reservas.router import router as reservas_router
+from app.pkg_archivos.router import router as archivos_router
 
 # Aquí incluiremos los routers de los paquetes más adelante:
 app.include_router(seguridad_router, prefix="/api/v1/seguridad")
 app.include_router(catalogo_router, prefix="/api/v1/catalogo")
 app.include_router(sucursales_router, prefix="/api/v1/sucursales")
 app.include_router(ventas_router, prefix="/api/v1/ventas")
+app.include_router(reservas_router, prefix="/api/v1/reservas")
+app.include_router(archivos_router, prefix="/api/v1/archivos")

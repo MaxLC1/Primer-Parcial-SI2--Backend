@@ -28,6 +28,7 @@ from app.pkg_seguridad.models import *
 from app.pkg_catalogo.models import *
 from app.pkg_sucursales.models import *
 from app.pkg_ventas.models import *
+from app.pkg_reservas.models import *
 
 target_metadata = Base.metadata
 

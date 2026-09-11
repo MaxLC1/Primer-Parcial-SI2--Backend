@@ -46,8 +46,16 @@ def login(usuario: schemas.UsuarioLogin, db: Session = Depends(get_db)):
     
     # Configurar expiración y crear token
     access_token_expires = timedelta(minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES)
+    
+    # Inyectamos el rol_nombre en el payload
+    payload = {
+        "sub": user.email, 
+        "id": user.id,
+        "rol": user.rol.nombre,
+        "nombre": user.nombre_completo
+    }
     access_token = security.create_access_token(
-        data={"sub": user.email, "id": user.id}, expires_delta=access_token_expires
+        data=payload, expires_delta=access_token_expires
     )
     
     return {"access_token": access_token, "token_type": "bearer"}

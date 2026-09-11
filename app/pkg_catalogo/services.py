@@ -44,3 +44,25 @@ def create_color(db: Session, color: schemas.ColorCreate):
     db.commit()
     db.refresh(db_color)
     return db_color
+
+# -- COLECCIONES --
+def get_colecciones(db: Session):
+    return db.query(models.Coleccion).all()
+
+def create_coleccion(db: Session, coleccion: schemas.ColeccionCreate):
+    db_coleccion = models.Coleccion(nombre=coleccion.nombre)
+    db.add(db_coleccion)
+    db.commit()
+    db.refresh(db_coleccion)
+    return db_coleccion
+
+# -- PROVEEDORES --
+def get_proveedores(db: Session):
+    return db.query(models.Proveedor).all()
+
+def create_proveedor(db: Session, proveedor: schemas.ProveedorCreate):
+    db_proveedor = models.Proveedor(nombre=proveedor.nombre, contacto=proveedor.contacto)
+    db.add(db_proveedor)
+    db.commit()
+    db.refresh(db_proveedor)
+    return db_proveedor
