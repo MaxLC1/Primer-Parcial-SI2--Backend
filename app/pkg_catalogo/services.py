@@ -12,6 +12,15 @@ def create_producto(db: Session, producto: schemas.ProductoCreate):
     db.refresh(db_producto)
     return db_producto
 
+def update_producto(db: Session, producto_id: int, producto_data: schemas.ProductoCreate):
+    db_producto = db.query(models.Producto).filter(models.Producto.id == producto_id).first()
+    if db_producto:
+        for key, value in producto_data.model_dump().items():
+            setattr(db_producto, key, value)
+        db.commit()
+        db.refresh(db_producto)
+    return db_producto
+
 # -- CATEGORIAS --
 def get_categorias(db: Session):
     return db.query(models.Categoria).all()

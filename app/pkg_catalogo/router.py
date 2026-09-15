@@ -27,6 +27,14 @@ def create_producto(producto: schemas.ProductoCreate, db: Session = Depends(get_
     """Crea un nuevo producto en el catálogo."""
     return services.create_producto(db=db, producto=producto)
 
+@router.put("/productos/{producto_id}", response_model=schemas.ProductoOut)
+def update_producto(producto_id: int, producto: schemas.ProductoCreate, db: Session = Depends(get_db)):
+    """Actualiza un producto existente en el catálogo."""
+    db_producto = services.update_producto(db=db, producto_id=producto_id, producto_data=producto)
+    if db_producto is None:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return db_producto
+
 @router.get("/tallas", response_model=List[schemas.TallaOut])
 def read_tallas(db: Session = Depends(get_db)):
     """Obtiene la lista de tallas de ropa."""
