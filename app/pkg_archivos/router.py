@@ -21,4 +21,4 @@ def upload_file(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    return {"url": f"http://192.168.100.4:8000/uploads/{unique_filename}"}
+    return {"url": f"http://34.230.18.9:8000/uploads/{unique_filename}"}
