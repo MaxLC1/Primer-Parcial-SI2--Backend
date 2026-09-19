@@ -4,6 +4,7 @@ import os
 import uuid
 import base64
 import requests
+from app.core.config import settings
 
 router = APIRouter(tags=["Archivos"])
 
@@ -49,7 +50,7 @@ def upload_file(file: UploadFile = File(...)):
             print(f"Error quitando fondo: {e}")
             pass # Si falla, dejamos la imagen original
 
-    return {"url": f"http://localhost:8000/uploads/{unique_filename}"}
+    return {"url": f"{settings.API_BASE_URL}/uploads/{unique_filename}"}
 
 @router.get("/proxy-imagen")
 def proxy_imagen(url: str):
