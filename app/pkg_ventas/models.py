@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Float, ForeignKey, DateTime, String
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 from datetime import datetime
@@ -10,6 +10,10 @@ class Venta(Base):
     total = Column(Float, default=0.0)
     usuario_id = Column(Integer, ForeignKey("usuarios.id"))
     sucursal_id = Column(Integer, ForeignKey("sucursales.id"))
+    metodo_pago = Column(String(50), default="Efectivo") # Efectivo, QR, Stripe
+    transaccion_id = Column(String(100), nullable=True) # Para Stripe o QR id
+    tipo_entrega = Column(String(50), default="Recojo en Tienda") # Delivery o Recojo en Tienda
+    direccion_envio = Column(String(255), nullable=True)
     
     detalles = relationship("DetalleVenta", back_populates="venta")
     usuario = relationship("Usuario")

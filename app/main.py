@@ -31,7 +31,9 @@ from app.pkg_catalogo.router import router as catalogo_router
 from app.pkg_sucursales.router import router as sucursales_router
 from app.pkg_ventas.router import router as ventas_router
 from app.pkg_reservas.router import router as reservas_router
-from app.pkg_archivos.router import router as archivos_router
+from app.pkg_archivos import router as archivos_router
+from app.pkg_devoluciones import router as devoluciones_router
+from app.pkg_delivery import router as delivery_router
 
 # Aquí incluiremos los routers de los paquetes más adelante:
 app.include_router(seguridad_router, prefix="/api/v1/seguridad")
@@ -39,4 +41,6 @@ app.include_router(catalogo_router, prefix="/api/v1/catalogo")
 app.include_router(sucursales_router, prefix="/api/v1/sucursales")
 app.include_router(ventas_router, prefix="/api/v1/ventas")
 app.include_router(reservas_router, prefix="/api/v1/reservas")
-app.include_router(archivos_router, prefix="/api/v1/archivos")
+app.include_router(archivos_router.router, prefix="/api/v1/archivos")
+app.include_router(devoluciones_router.router, prefix="/api/v1")
+app.include_router(delivery_router.router, prefix="/api/v1")

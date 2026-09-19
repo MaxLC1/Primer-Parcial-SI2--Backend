@@ -51,3 +51,23 @@ def update_password(db: Session, user_id: int, new_password: str):
     user.hashed_password = security.get_password_hash(new_password)
     db.commit()
     return user
+
+def update_usuario(db: Session, user_id: int, data: schemas.UsuarioUpdate):
+    user = db.query(models.Usuario).filter(models.Usuario.id == user_id).first()
+    if not user:
+        return None
+    
+    if data.nombre_completo is not None:
+        user.nombre_completo = data.nombre_completo
+    if data.email is not None:
+        user.email = data.email
+    if data.rol_id is not None:
+        user.rol_id = data.rol_id
+    if data.is_active is not None:
+        user.is_active = data.is_active
+    if data.password:
+        user.hashed_password = security.get_password_hash(data.password)
+        
+    db.commit()
+    db.refresh(user)
+    return user

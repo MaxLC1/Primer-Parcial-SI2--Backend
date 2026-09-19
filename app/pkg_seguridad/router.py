@@ -23,6 +23,14 @@ def register(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     
     return services.create_usuario(db=db, usuario=usuario)
 
+@router.put("/usuarios/{user_id}", response_model=schemas.UsuarioOut)
+def update_usuario(user_id: int, data: schemas.UsuarioUpdate, db: Session = Depends(get_db)):
+    """Actualiza la información de un usuario existente."""
+    user = services.update_usuario(db, user_id, data)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado.")
+    return user
+
 @router.get("/roles", response_model=List[schemas.RolOut])
 def read_roles(db: Session = Depends(get_db)):
     """Obtiene los roles del sistema."""

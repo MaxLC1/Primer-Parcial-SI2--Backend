@@ -12,6 +12,10 @@ class DetalleVentaCreate(BaseModel):
 class VentaCreate(BaseModel):
     sucursal_id: int
     usuario_id: int
+    metodo_pago: str = "Efectivo"
+    transaccion_id: Optional[str] = None
+    tipo_entrega: str = "Recojo en Tienda"
+    direccion_envio: Optional[str] = None
     detalles: List[DetalleVentaCreate]
 
 class DetalleVentaOut(BaseModel):
@@ -32,6 +36,10 @@ class VentaOut(BaseModel):
     total: float
     usuario_id: int
     sucursal_id: int
+    metodo_pago: Optional[str] = None
+    transaccion_id: Optional[str] = None
+    tipo_entrega: Optional[str] = None
+    direccion_envio: Optional[str] = None
     detalles: List[DetalleVentaOut]
 
     class Config:

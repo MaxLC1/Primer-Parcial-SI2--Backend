@@ -22,6 +22,26 @@ class UsuarioBase(BaseModel):
     is_active: bool = True
     rol_id: Optional[int] = None
 
+class UsuarioUpdate(BaseModel):
+    nombre_completo: Optional[str] = None
+    email: Optional[EmailStr] = None
+    is_active: Optional[bool] = None
+    rol_id: Optional[int] = None
+    password: Optional[str] = None
+
+    @field_validator('password')
+    @classmethod
+    def validar_password_fuerte(cls, v: Optional[str]) -> Optional[str]:
+        if not v:
+            return v
+        if len(v) < 8:
+            raise ValueError('La contraseña debe tener al menos 8 caracteres')
+        if not re.search(r'[0-9]', v):
+            raise ValueError('La contraseña debe contener al menos un número')
+        if not re.search(r'[^a-zA-Z0-9]', v):
+            raise ValueError('La contraseña debe contener al menos un carácter especial')
+        return v
+
 class UsuarioCreate(UsuarioBase):
     password: str  # Lo recibimos en texto plano, pero se guardará encriptado
 

@@ -23,6 +23,22 @@ def create_sucursal(db: Session, sucursal: schemas.SucursalCreate):
     db.refresh(db_sucursal)
     return db_sucursal
 
+def update_sucursal(db: Session, sucursal_id: int, data: schemas.SucursalUpdate):
+    sucursal = db.query(models.Sucursal).filter(models.Sucursal.id == sucursal_id).first()
+    if not sucursal:
+        return None
+    
+    if data.nombre is not None:
+        sucursal.nombre = data.nombre
+    if data.direccion is not None:
+        sucursal.direccion = data.direccion
+    if data.ciudad_id is not None:
+        sucursal.ciudad_id = data.ciudad_id
+        
+    db.commit()
+    db.refresh(sucursal)
+    return sucursal
+
 # -- INVENTARIOS --
 def get_inventarios(db: Session):
     return db.query(models.Inventario).all()
@@ -47,3 +63,13 @@ def create_inventario(db: Session, inventario: schemas.InventarioCreate):
     db.commit()
     db.refresh(db_nuevo)
     return db_nuevo
+
+def update_inventario(db: Session, inventario_id: int, data: schemas.InventarioUpdate):
+    inv = db.query(models.Inventario).filter(models.Inventario.id == inventario_id).first()
+    if not inv:
+        return None
+    
+    inv.cantidad = data.cantidad
+    db.commit()
+    db.refresh(inv)
+    return inv

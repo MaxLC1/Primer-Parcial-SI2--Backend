@@ -13,9 +13,9 @@ def recomendaciones(cliente_id: int, db: Session = Depends(get_db)):
     return services.obtener_recomendaciones(cliente_id, db)
 
 @router.post("/chatbot")
-def chatbot(mensaje: str):
+def chatbot(mensaje: str, db: Session = Depends(get_db)):
     """Interactúa con el asistente inteligente de la tienda."""
-    return services.procesar_chatbot(mensaje)
+    return services.procesar_chatbot(mensaje, db)
 
 @router.post("/reporte-voz")
 def reporte_voz(comando: str):

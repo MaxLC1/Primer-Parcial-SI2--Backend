@@ -29,7 +29,11 @@ def create_venta(db: Session, venta: schemas.VentaCreate):
     db_venta = models.Venta(
         total=total_venta,
         usuario_id=venta.usuario_id,
-        sucursal_id=venta.sucursal_id
+        sucursal_id=venta.sucursal_id,
+        metodo_pago=venta.metodo_pago,
+        transaccion_id=venta.transaccion_id,
+        tipo_entrega=venta.tipo_entrega,
+        direccion_envio=venta.direccion_envio
     )
     db.add(db_venta)
     db.commit()
@@ -50,7 +54,39 @@ def create_venta(db: Session, venta: schemas.VentaCreate):
         
     db.commit()
     db.refresh(db_venta)
+
+    # Si es Delivery, crear la orden de servicio
+    if venta.tipo_entrega == "Delivery":
+        from app.pkg_delivery.models import ServicioDelivery
+        db_delivery = ServicioDelivery(
+            venta_id=db_venta.id,
+            estado="Pendiente"
+        )
+        db.add(db_delivery)
+        db.commit()
+
     return db_venta
     
 def get_ventas(db: Session):
     return db.query(models.Venta).all()
+
+def get_reportes(db: Session):
+    from sqlalchemy.sql import func
+    
+    ventas = db.query(models.Venta).all()
+    
+    total_ingresos = sum(v.total for v in ventas) if ventas else 0
+    total_ventas = len(ventas)
+    ticket_promedio = total_ingresos / total_ventas if total_ventas > 0 else 0
+    
+    # KPIs simples para el dashboard
+    return {
+        "total_ingresos": total_ingresos,
+        "total_ventas": total_ventas,
+        "ticket_promedio": ticket_promedio,
+        "ventas_por_metodo": {
+            "Efectivo": len([v for v in ventas if v.metodo_pago == "Efectivo"]),
+            "QR": len([v for v in ventas if v.metodo_pago == "QR"]),
+            "Stripe": len([v for v in ventas if v.metodo_pago == "Stripe"]),
+        }
+    }

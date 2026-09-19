@@ -21,6 +21,8 @@ class Categoria(Base):
     __tablename__ = "categorias"
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), unique=True, nullable=False)
+    descripcion = Column(Text, nullable=True)
+    activo = Column(Boolean, default=True)
     
     productos = relationship("Producto", back_populates="categoria")
 

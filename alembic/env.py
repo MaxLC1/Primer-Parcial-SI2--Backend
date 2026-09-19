@@ -29,7 +29,8 @@ from app.pkg_catalogo.models import *
 from app.pkg_sucursales.models import *
 from app.pkg_ventas.models import *
 from app.pkg_reservas.models import *
-
+from app.pkg_devoluciones.models import *
+from app.pkg_delivery.models import *
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

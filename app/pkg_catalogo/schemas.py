@@ -8,6 +8,9 @@ class ColeccionBase(BaseModel):
 class ColeccionCreate(ColeccionBase):
     pass
 
+class ColeccionUpdate(ColeccionBase):
+    pass
+
 class ColeccionOut(ColeccionBase):
     id: int
     class Config:
@@ -21,6 +24,9 @@ class ProveedorBase(BaseModel):
 class ProveedorCreate(ProveedorBase):
     pass
 
+class ProveedorUpdate(ProveedorBase):
+    pass
+
 class ProveedorOut(ProveedorBase):
     id: int
     class Config:
@@ -29,6 +35,8 @@ class ProveedorOut(ProveedorBase):
 # -- CATEGORIAS --
 class CategoriaBase(BaseModel):
     nombre: str
+    descripcion: Optional[str] = None
+    activo: bool = True
 
 class CategoriaCreate(CategoriaBase):
     pass

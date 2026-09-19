@@ -23,6 +23,11 @@ class SucursalBase(BaseModel):
 class SucursalCreate(SucursalBase):
     pass
 
+class SucursalUpdate(BaseModel):
+    nombre: Optional[str] = None
+    direccion: Optional[str] = None
+    ciudad_id: Optional[int] = None
+
 class SucursalOut(SucursalBase):
     id: int
     ciudad: Optional[CiudadOut] = None
@@ -40,6 +45,9 @@ class InventarioBase(BaseModel):
 
 class InventarioCreate(InventarioBase):
     pass
+
+class InventarioUpdate(BaseModel):
+    cantidad: int
 
 class InventarioOut(InventarioBase):
     id: int

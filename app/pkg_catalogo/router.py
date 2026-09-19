@@ -17,6 +17,22 @@ def create_categoria(categoria: schemas.CategoriaCreate, db: Session = Depends(g
     """Crea una nueva categoría."""
     return services.create_categoria(db=db, categoria=categoria)
 
+@router.put("/categorias/{categoria_id}", response_model=schemas.CategoriaOut)
+def update_categoria(categoria_id: int, categoria: schemas.CategoriaCreate, db: Session = Depends(get_db)):
+    """Actualiza una categoría existente."""
+    db_cat = services.update_categoria(db=db, categoria_id=categoria_id, categoria_data=categoria)
+    if db_cat is None:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return db_cat
+
+@router.delete("/categorias/{categoria_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_categoria(categoria_id: int, db: Session = Depends(get_db)):
+    """Elimina una categoría."""
+    success = services.delete_categoria(db=db, categoria_id=categoria_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada o no se puede eliminar por integridad de datos")
+    return None
+
 @router.get("/productos", response_model=List[schemas.ProductoOut])
 def read_productos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Obtiene el catálogo de productos con paginación."""
@@ -66,6 +82,22 @@ def create_coleccion(coleccion: schemas.ColeccionCreate, db: Session = Depends(g
     """Registra una nueva coleccion."""
     return services.create_coleccion(db=db, coleccion=coleccion)
 
+@router.put("/colecciones/{coleccion_id}", response_model=schemas.ColeccionOut)
+def update_coleccion(coleccion_id: int, coleccion: schemas.ColeccionUpdate, db: Session = Depends(get_db)):
+    """Actualiza una colección existente."""
+    db_col = services.update_coleccion(db=db, coleccion_id=coleccion_id, coleccion_data=coleccion)
+    if db_col is None:
+        raise HTTPException(status_code=404, detail="Colección no encontrada")
+    return db_col
+
+@router.delete("/colecciones/{coleccion_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_coleccion(coleccion_id: int, db: Session = Depends(get_db)):
+    """Elimina una colección."""
+    success = services.delete_coleccion(db=db, coleccion_id=coleccion_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Colección no encontrada o no se puede eliminar por integridad de datos")
+    return None
+
 # -- PROVEEDORES --
 @router.get("/proveedores", response_model=List[schemas.ProveedorOut])
 def read_proveedores(db: Session = Depends(get_db)):
@@ -76,3 +108,11 @@ def read_proveedores(db: Session = Depends(get_db)):
 def create_proveedor(proveedor: schemas.ProveedorCreate, db: Session = Depends(get_db)):
     """Registra un nuevo proveedor."""
     return services.create_proveedor(db=db, proveedor=proveedor)
+
+@router.put("/proveedores/{proveedor_id}", response_model=schemas.ProveedorOut)
+def update_proveedor(proveedor_id: int, proveedor: schemas.ProveedorUpdate, db: Session = Depends(get_db)):
+    """Actualiza un proveedor existente."""
+    db_prov = services.update_proveedor(db=db, proveedor_id=proveedor_id, proveedor_data=proveedor)
+    if db_prov is None:
+        raise HTTPException(status_code=404, detail="Proveedor no encontrado")
+    return db_prov
