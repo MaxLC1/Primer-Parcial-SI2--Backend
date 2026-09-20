@@ -86,3 +86,47 @@ def proxy_imagen(url: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+from fastapi.responses import Response
+from io import BytesIO
+
+@router.get("/proxy-nobg")
+def proxy_nobg(url: str):
+    """
+    Descarga una imagen (o lee de uploads) y le quita el fondo blanco al vuelo.
+    """
+    try:
+        if "uploads/" in url and not url.startswith("http"):
+            file_path = url
+        elif "uploads/" in url and url.startswith("http"):
+            file_path = url.split("uploads/")[1]
+            file_path = os.path.join("uploads", file_path)
+        else:
+            raise HTTPException(status_code=400, detail="Solo se soportan imágenes locales para nobg")
+            
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail="Imagen local no encontrada")
+            
+        from PIL import Image
+        img = Image.open(file_path).convert('RGBA')
+        datas = img.getdata()
+        newData = []
+        for item in datas:
+            lum = (item[0] + item[1] + item[2]) / 3
+            if lum > 240:
+                newData.append((item[0], item[1], item[2], 0))
+            elif lum > 200:
+                alpha = int((240 - lum) / 40 * 255)
+                newData.append((item[0], item[1], item[2], alpha))
+            else:
+                newData.append(item)
+        img.putdata(newData)
+        
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        
+        return Response(content=img_byte_arr.getvalue(), media_type="image/png")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
