@@ -32,5 +32,5 @@ def asignar_repartidor(delivery_id: int, payload: schemas.DeliveryAssign, db: Se
 
 @router.put("/{delivery_id}/estado", response_model=schemas.DeliveryOut)
 def update_estado_delivery(delivery_id: int, payload: schemas.DeliveryUpdate, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
-    # Un repartidor solo puede actualizar si está asignado (lógica extra podría ir en service)
-    return services.update_estado(db, delivery_id, payload.estado)
+    # Un repartidor solo puede actualizar si está asignado (o puede auto-asignarse si estaba Pendiente)
+    return services.update_estado(db, delivery_id, payload.estado, current_user.id)
