@@ -23,6 +23,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/fashionstore_ar
       - API_BASE_URL=http://34.230.18.9:8000
+    volumes:
+      - uploads_data:/code/uploads
     depends_on:
       - db
     # Ejecutamos las migraciones automticamente antes de levantar el servidor
@@ -32,3 +34,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
