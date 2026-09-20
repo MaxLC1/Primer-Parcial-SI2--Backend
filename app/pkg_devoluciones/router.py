@@ -19,6 +19,6 @@ def create_devolucion(devolucion: schemas.DevolucionCreate, db: Session = Depend
 
 @router.put("/{dev_id}/estado", response_model=schemas.DevolucionOut)
 def update_devolucion_estado(dev_id: int, payload: schemas.DevolucionUpdate, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
-    if current_user.rol.nombre != "Administrador":
+    if current_user.rol.nombre not in ["Administrador", "Vendedor", "Encargado"]:
         raise HTTPException(status_code=403, detail="No autorizado")
     return services.update_estado(db, dev_id, payload.estado)

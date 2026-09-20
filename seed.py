@@ -25,7 +25,7 @@ def seed_db():
             print(f"Ciudad '{nombre}' ya existía.")
 
     # 1. Crear los roles definidos en la Arquitectura (CU-01 a CU-07)
-    roles_nombres = ["Administrador", "Encargado", "Cajero", "Cliente", "Proveedor", "Repartidor"]
+    roles_nombres = ["Administrador", "Encargado", "Cajero", "Cliente", "Proveedor", "Repartidor", "Vendedor"]
     roles_db = {}
     
     print("--- CREANDO ROLES ---")
@@ -46,6 +46,7 @@ def seed_db():
         {"nombre": "Admin Supremo", "email": "admin@fashionstore.com", "rol": "Administrador"},
         {"nombre": "Encargado Tienda", "email": "encargado@fashionstore.com", "rol": "Encargado"},
         {"nombre": "Cajero 1", "email": "cajero@fashionstore.com", "rol": "Cajero"},
+        {"nombre": "Vendedor Experto", "email": "vendedor@fashionstore.com", "rol": "Vendedor"},
         {"nombre": "Juan Cliente", "email": "cliente@fashionstore.com", "rol": "Cliente"},
         {"nombre": "Proveedor Textil", "email": "proveedor@fashionstore.com", "rol": "Proveedor"},
         {"nombre": "Repartidor Express", "email": "delivery@fashionstore.com", "rol": "Repartidor"}
