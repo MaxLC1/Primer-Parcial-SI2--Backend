@@ -36,7 +36,7 @@ class ProveedorOut(ProveedorBase):
 class CategoriaBase(BaseModel):
     nombre: str
     descripcion: Optional[str] = None
-    activo: bool = True
+    activo: Optional[bool] = True
 
 class CategoriaCreate(CategoriaBase):
     pass
@@ -74,7 +74,7 @@ class ColorOut(ColorBase):
 # -- TEMPORADAS --
 class TemporadaBase(BaseModel):
     nombre: str
-    activa: bool = True
+    activa: Optional[bool] = True
 
 class TemporadaCreate(TemporadaBase):
     pass
