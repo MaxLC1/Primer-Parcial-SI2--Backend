@@ -3,11 +3,8 @@ FROM python:3.10-slim
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /code
 
-# Instalar dependencias del sistema requeridas para compilar paquetes (como psycopg2)
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar dependencias (solo dejamos utilidades muy ligeras si es necesario)
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
 # Copiar el archivo de requerimientos e instalar dependencias
 COPY ./requirements.txt /code/requirements.txt
