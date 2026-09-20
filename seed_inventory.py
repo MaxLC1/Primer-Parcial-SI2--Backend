@@ -10,32 +10,45 @@ from app.pkg_catalogo.models import Producto
 def seed_inventory():
     db = SessionLocal()
     try:
+        import random
+        from app.pkg_catalogo.models import Talla, Color
+        
         productos = db.query(Producto).all()
+        tallas = db.query(Talla).all()
+        colores = db.query(Color).all()
+        
+        if not tallas or not colores:
+            print("Debes ejecutar seed_tallas.py y seed_colores.py primero.")
+            return
+
         for p in productos:
-            # Check if inventory exists for sucursal=1, talla=1, color=1
-            inv = db.query(Inventario).filter_by(
-                sucursal_id=1,
-                producto_id=p.id,
-                talla_id=1,
-                color_id=1
-            ).first()
+            # Elegir 3 tallas aleatorias y 3 colores aleatorios para este producto
+            tallas_elegidas = random.sample(tallas, k=min(3, len(tallas)))
+            colores_elegidos = random.sample(colores, k=min(3, len(colores)))
             
-            if not inv:
-                nuevo_inv = Inventario(
-                    sucursal_id=1,
-                    producto_id=p.id,
-                    talla_id=1,
-                    color_id=1,
-                    cantidad=100
-                )
-                db.add(nuevo_inv)
-                print(f"Inventario añadido para producto {p.nombre}")
-            else:
-                inv.cantidad = 100
-                print(f"Inventario actualizado para producto {p.nombre}")
+            for t in tallas_elegidas:
+                for c in colores_elegidos:
+                    inv = db.query(Inventario).filter_by(
+                        sucursal_id=1,
+                        producto_id=p.id,
+                        talla_id=t.id,
+                        color_id=c.id
+                    ).first()
+                    
+                    if not inv:
+                        nuevo_inv = Inventario(
+                            sucursal_id=1,
+                            producto_id=p.id,
+                            talla_id=t.id,
+                            color_id=c.id,
+                            cantidad=random.randint(15, 60)
+                        )
+                        db.add(nuevo_inv)
+            
+            print(f"Variantes de inventario añadidas para producto {p.nombre}")
         
         db.commit()
-        print("Inventario inicializado correctamente.")
+        print("Múltiples colores y tallas añadidos al inventario correctamente.")
     except Exception as e:
         print(f"Error: {e}")
     finally:
