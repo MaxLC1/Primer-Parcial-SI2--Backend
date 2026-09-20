@@ -16,6 +16,8 @@ COPY ./alembic /code/alembic
 COPY ./alembic.ini /code/alembic.ini
 COPY ./seed.py /code/seed.py
 COPY ./seed_inventory.py /code/seed_inventory.py
+COPY ./seed_tallas.py /code/seed_tallas.py
+COPY ./seed_colores.py /code/seed_colores.py
 
 # Exponer el puerto en el que correrá FastAPI
 EXPOSE 8000
